@@ -1,6 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import TextBoxGroup from "../components/TextBoxGroup";
 import CustomView from "../components/CustomView";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
@@ -24,8 +30,8 @@ const HomeScreen = () => {
     let currKM = Number(selectedYearlyKM);
     let elecDistance = elecMileage * (gasCost / elecCost);
 
-    setGas(gasMileage); // KM a car can drive / L
-    setElec(elecDistance ? elecDistance.toFixed(1) : 0); // KM a car can drive / kwH
+    setGas((Number(gasMileage) ? Number(gasMileage) : 0).toFixed(1)); // KM a car can drive / L
+    setElec((elecDistance ? elecDistance : 0).toFixed(1)); // KM a car can drive / kwH
     setKMMore(((elecDistance ? elecDistance : 0) - gasMileage).toFixed(1)); // additional KM for elec vs gas
 
     let annualGasCost = gasCost * (currKM / gasMileage);
@@ -36,7 +42,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={[styles.title, styles.boldText]}>EV Savings Calculator</Text>
       {/* Gas Text Boxes */}
       <TextBoxGroup
@@ -67,7 +73,12 @@ const HomeScreen = () => {
           style={{ width: "100%" }}
           values={["15000", "25000", "40000"]}
           selectedIndex={selectedYearlyKMIndex}
-          onValueChange={(itemValue) => setSelectedYearlyKM(itemValue)}
+          onValueChange={(itemValue) => {
+            setSelectedYearlyKM(itemValue);
+          }}
+          onChange={(event) => {
+            setSelectedYearlyKMIndex(event.nativeEvent.selectedSegmentIndex);
+          }}
         />
       </View>
 
@@ -115,7 +126,7 @@ const HomeScreen = () => {
 
         <StatusBar style="auto" />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -126,7 +137,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "flex-start",
-    marginTop: 70,
     margin: 20,
     gap: 20,
   },

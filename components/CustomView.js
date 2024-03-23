@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image } from "react-native";
 
 const CustomView = (props) => {
   // set view icons from props
-  var icon =
+  const icon =
     props.imageName == "gas"
       ? require("../assets/gas.png")
       : props.imageName == "elec"
