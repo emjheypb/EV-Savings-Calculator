@@ -6,6 +6,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   View,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import TextBoxGroup from "../components/TextBoxGroup";
 import CustomView from "../components/CustomView";
@@ -42,91 +44,98 @@ const HomeScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={[styles.title, styles.boldText]}>EV Savings Calculator</Text>
-      {/* Gas Text Boxes */}
-      <TextBoxGroup
-        groupName="Gas Vehicle Information"
-        tb1={setGasCost}
-        tb1PlaceHolder="Price per litre ($/L)"
-        tb1InputMode="decimal"
-        tb2={setGasMileage}
-        tb2PlaceHolder="Gas mileage (km/L)"
-        tb2InputMode="decimal"
-      />
-
-      {/* Electric Text Boxes */}
-      <TextBoxGroup
-        groupName="Electric Vehicle Information"
-        tb1={setElecCost}
-        tb1PlaceHolder="Utilities cost ($/kwH)"
-        tb1InputMode="decimal"
-        tb2={setElecMileage}
-        tb2PlaceHolder="EV mileage (km/kwH)"
-        tb2InputMode="decimal"
-      />
-
-      {/* KM Picker */}
-      <View>
-        <Text>How many km do you drive each year?</Text>
-        <SegmentedControl
-          style={{ width: "100%" }}
-          values={["15000", "25000", "40000"]}
-          selectedIndex={selectedYearlyKMIndex}
-          onValueChange={(itemValue) => {
-            setSelectedYearlyKM(itemValue);
-          }}
-          onChange={(event) => {
-            setSelectedYearlyKMIndex(event.nativeEvent.selectedSegmentIndex);
-          }}
-        />
-      </View>
-
-      <TouchableOpacity style={styles.button} onPress={estimateSavings}>
-        <Text style={styles.boldText}>Estimate Savings</Text>
-      </TouchableOpacity>
-
-      {/* Distance Results */}
-      <View style={styles.resultsContainer}>
-        <Text style={styles.resultLabel}>
-          For the price of 1 liter of gas, you can travel:
-        </Text>
-
-        <View style={styles.oneRow}>
-          <CustomView
-            imageName="gas"
-            bgColor="rgb(234, 161, 193)"
-            value={gas}
-            label="km"
-          />
-          <CustomView
-            imageName="elec"
-            bgColor="rgb(145,220,223)"
-            value={elec}
-            label="km"
-          />
-          <CustomView
-            imageName="arrow"
-            bgColor="rgb(246,198,67)"
-            value={kmMore}
-            label="km more"
-          />
-        </View>
-
-        {/* Savings Result */}
-        <Text style={styles.resultLabel}>
-          By switching to electric, you obtain:
-        </Text>
-        <View style={styles.blackBox}>
-          <Text style={[styles.blackBoxText, styles.title]}>${savings}</Text>
-          <Text style={[styles.blackBoxText, styles.resultLabel]}>
-            in savings per year
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <View>
+          <Text style={[styles.title, styles.boldText]}>
+            EV Savings Calculator
           </Text>
         </View>
 
-        <StatusBar style="auto" />
-      </View>
-    </SafeAreaView>
+        {/* Gas Text Boxes */}
+        <TextBoxGroup
+          groupName="Gas Vehicle Information"
+          tb1={setGasCost}
+          tb1PlaceHolder="Price per litre ($/L)"
+          tb1InputMode="decimal"
+          tb2={setGasMileage}
+          tb2PlaceHolder="Gas mileage (km/L)"
+          tb2InputMode="decimal"
+        />
+
+        {/* Electric Text Boxes */}
+        <TextBoxGroup
+          groupName="Electric Vehicle Information"
+          tb1={setElecCost}
+          tb1PlaceHolder="Utilities cost ($/kwH)"
+          tb1InputMode="decimal"
+          tb2={setElecMileage}
+          tb2PlaceHolder="EV mileage (km/kwH)"
+          tb2InputMode="decimal"
+        />
+
+        {/* KM Picker */}
+        <View>
+          <Text>How many km do you drive each year?</Text>
+          <SegmentedControl
+            style={{ width: "100%", marginTop: 10 }}
+            values={["15000", "25000", "40000"]}
+            selectedIndex={selectedYearlyKMIndex}
+            onValueChange={(itemValue) => {
+              setSelectedYearlyKM(itemValue);
+            }}
+            onChange={(event) => {
+              setSelectedYearlyKMIndex(event.nativeEvent.selectedSegmentIndex);
+            }}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.button} onPress={estimateSavings}>
+          <Text style={styles.boldText}>Estimate Savings</Text>
+        </TouchableOpacity>
+
+        {/* Distance Results */}
+        <View style={styles.resultsContainer}>
+          <Text style={styles.resultLabel}>
+            For the price of 1 liter of gas, you can travel:
+          </Text>
+
+          <View style={styles.oneRow}>
+            <CustomView
+              imageName="gas"
+              bgColor="rgb(234, 161, 193)"
+              value={gas}
+              label="km"
+            />
+            <CustomView
+              imageName="elec"
+              bgColor="rgb(145,220,223)"
+              value={elec}
+              label="km"
+            />
+            <CustomView
+              imageName="arrow"
+              bgColor="rgb(246,198,67)"
+              value={kmMore}
+              label="km more"
+            />
+          </View>
+
+          {/* Savings Result */}
+          <Text style={styles.resultLabel}>
+            By switching to electric, you obtain:
+          </Text>
+          <View style={styles.blackBox}>
+            <Text style={[styles.blackBoxText, styles.title]}>${savings}</Text>
+            <Text style={[styles.blackBoxText, styles.resultLabel]}>
+              in savings per year
+            </Text>
+          </View>
+
+          <StatusBar style="auto" />
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
